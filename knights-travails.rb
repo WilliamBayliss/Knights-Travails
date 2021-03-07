@@ -10,34 +10,43 @@ class Board
                   [6,0], [6,1], [6,2], [6,3], [6,4], [6,5], [6,6], [6,7], 
                   [7,0], [7,1], [7,2], [7,3], [7,4], [7,5], [7,6], [7,7], 
                 ]
-    @moves = create_adjacency_list(chess_board)
+    @adjacency_list = create_adjacency_list(chess_board)
+    knight_moves([0,1], [1,3])
+  end
 
-    @moves.each do |adjency_list|
-      p adjency_list
+  def knight_moves start_coord, end_coord
+    moves = []
+    start_square = get_square_from_list(start_coord[0], start_coord[1])
+    p start_square
+
+  end
+
+  def breadth_first_search square
+    # Find square in list
+      # If destination is in square.knight_moves
+      # Add to visited and return
+    # Else
+      # Create queue
+      # Get all unvisited squares from square.knight_moves from list
+      # Add all unvisited squares to queue
+      # Call function on each item in queue
+  end
+
+  def depth_first_search square
+    # Find square in list
+      # If destination is in square.knight_moves
+      # Add to visited and return
+    # Else
+  end
+
+  def get_square_from_list x, y
+    @adjacency_list.each do |square|
+      if square.x == x && square.y == y
+        return square
+      end
     end
   end
 
-  def knight_moves start_coord, end_coord, chess_board
-    start_square = Square.new(start_coord)
-    end_square = Square.new(end_coord)
-
-    start_index = find_square_index_in_adj_list(chess_board, start_coord)
-    
-    knight = Knight.new(start_square)
-
-    
-
-  end
-
-  def depth_first_search index, square
-    visited = []
-    if index.contains square
-      visited.append(square)
-    end
-
-
-    
-  end
 
   # Takes Chess board and, for each square, iterates over the board to see if other squares on the board constitute a legal move for a Knight from that square
   # If a Knight can move to the end_square from the start_square, a Square object is created with the x and y coordinates
@@ -77,19 +86,10 @@ class Board
     end
     adjency_list
   end
-
-  def find_square_index_in_adj_list chess_board, coordinate
-    chess_board.each_with_index do |square, index|
-      if square == coordinate
-        return index
-      end
-    end
-  end
 end
-
 # Object placed into adjacency lists, with data for x and y coordinate
 class Square
-  attr_accessor :x_coord, :y_coord, :knight_moves
+  attr_accessor :x, :y, :knight_moves
   def initialize x_coord, y_coord
     @x = x_coord
     @y = y_coord
@@ -104,8 +104,8 @@ class Knight
     @square = square
   end
 
-  def move coordinate
-    @square = coordinate
+  def move new_position
+    @square = new_position
   end
 end
 
