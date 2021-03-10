@@ -1,6 +1,82 @@
+class KnightsTravails
+  def initialize
+    board = Board.new
+  end
+
+
+end
+
+# Creates a Graph structure for squares on a chess board
 class Board
 # TODO
   def initialize
+    @board = {}
+
+    create_graph(get_chess_board_array)
+    add_edges_to_graph()
+    @board.each do |key, value|
+      if value.knight_moves.length > 0
+        puts value.knight_moves.length
+      end
+    end
+  end
+
+  def add_square(square)
+    @board[square.coordinate] = square
+  end
+
+  def add_edge(predecessor_coordinate, successor_coordinate)
+    @board[predecessor_coordinate].add_edge(@board[successor_coordinate])
+  end
+
+  def [](coordinate)
+    @board[coordinate]
+  end
+
+  def find_path
+    
+  end
+
+
+  def create_graph chess_board
+    chess_board.each do |coordinate|
+      square = Square.new(coordinate)
+      add_square(square)
+    end
+  end
+
+  def add_edges_to_graph
+    @board.each do |square_one, value|
+      @board.each do |square_two, value_two|
+        if legal_move_validator(square_one, square_two)
+          add_edge(square_one, square_two)
+        end
+      end
+    end
+  end
+
+  def legal_move_validator square_one, square_two
+    if    square_one[0] == (square_two[0] + 2) && square_one[1] == (square_two[1] + 1)  
+      return true
+    elsif square_one[0] == (square_two[0] + 1) && square_one[1] == (square_two[1] + 2)
+      return true
+    elsif square_one[0] == (square_two[0] - 1) && square_one[1] == (square_two[1] + 2)
+      return true
+    elsif square_one[0] == (square_two[0] - 2) && square_one[1] == (square_two[1] - 1)
+      return true
+    elsif square_one[0] == (square_two[0] - 1) && square_one[1] == (square_two[1] - 2)
+      return true
+    elsif square_one[0] == (square_two[0] + 1) && square_one[1] == (square_two[1] - 2)
+      return true
+    elsif square_one[0] == (square_two[0] + 2) && square_one[1] == (square_two[1] -1)
+      return true
+    else
+      return false
+    end
+  end
+
+
+  def get_chess_board_array
     chess_board =[[0,0], [0,1], [0,2], [0,3], [0,4], [0,5], [0,6], [0,7], 
                   [1,0], [1,1], [1,2], [1,3], [1,4], [1,5], [1,6], [1,7], 
                   [2,0], [2,1], [2,2], [2,3], [2,4], [2,5], [2,6], [2,7], 
@@ -9,91 +85,22 @@ class Board
                   [5,0], [5,1], [5,2], [5,3], [5,4], [5,5], [5,6], [5,7], 
                   [6,0], [6,1], [6,2], [6,3], [6,4], [6,5], [6,6], [6,7], 
                   [7,0], [7,1], [7,2], [7,3], [7,4], [7,5], [7,6], [7,7], 
-                ]
-    @adjacency_list = create_adjacency_list(chess_board)
-    knight_moves([0,1], [1,3])
+                ] 
+    return chess_board
   end
 
-  def knight_moves start_coord, end_coord
-    moves = []
-    start_square = get_square_from_list(start_coord[0], start_coord[1])
-    p start_square
-
-  end
-
-  def breadth_first_search square
-    # Find square in list
-      # If destination is in square.knight_moves
-      # Add to visited and return
-    # Else
-      # Create queue
-      # Get all unvisited squares from square.knight_moves from list
-      # Add all unvisited squares to queue
-      # Call function on each item in queue
-  end
-
-  def depth_first_search square
-    # Find square in list
-      # If destination is in square.knight_moves
-      # Add to visited and return
-    # Else
-  end
-
-  def get_square_from_list x, y
-    @adjacency_list.each do |square|
-      if square.x == x && square.y == y
-        return square
-      end
-    end
-  end
-
-
-  # Takes Chess board and, for each square, iterates over the board to see if other squares on the board constitute a legal move for a Knight from that square
-  # If a Knight can move to the end_square from the start_square, a Square object is created with the x and y coordinates
-  # and added to the start_square's adjancy list.
-  # the full adjacency list - matrix - is returned at the end
-  def create_adjacency_list chess_board
-    adjency_list = []
-    chess_board.each do |start_square|
-      square = Square.new(start_square[0], start_square[1])
-      adjacent_squares = []
-      chess_board.each do |end_square|
-        if end_square[0] == (start_square[0] + 2) && end_square[1] == (start_square[1] + 1)
-          adjacent_square = Square.new(end_square[0], end_square[1])
-          adjacent_squares.append(adjacent_square)
-        elsif end_square[0] == (start_square[0] + 1) && end_square[1] == (start_square[1] + 2)
-          adjacent_square = Square.new(end_square[0], end_square[1])
-          adjacent_squares.append(adjacent_square)
-        elsif end_square[0] == (start_square[0] - 1) && end_square[1] == (start_square[1] + 2)
-          adjacent_square = Square.new(end_square[0], end_square[1])
-          adjacent_squares.append(adjacent_square)
-        elsif end_square[0] == (start_square[0] - 2) && end_square[1] == (start_square[1] - 1)
-          adjacent_square = Square.new(end_square[0], end_square[1])
-          adjacent_squares.append(adjacent_square)
-        elsif end_square[0] == (start_square[0] - 1) && end_square[1] == (start_square[1] - 2)
-          adjacent_square = Square.new(end_square[0], end_square[1])
-          adjacent_squares.append(adjacent_square)
-        elsif end_square[0] == (start_square[0] + 1) && end_square[1] == (start_square[1] - 2)
-          adjacent_square = Square.new(end_square[0], end_square[1])
-          adjacent_squares.append(adjacent_square)
-        elsif end_square[0] == (start_square[0] + 2) && end_square[1] == (start_square[1] -1)
-          adjacent_square = Square.new(end_square[0], end_square[1])
-          adjacent_squares.append(adjacent_square)
-        end
-      end
-      square.knight_moves = adjacent_squares
-      adjency_list.append(square)
-    end
-    adjency_list
-  end
 end
+
 # Object placed into adjacency lists, with data for x and y coordinate
 class Square
-  attr_accessor :x, :y, :knight_moves
-  def initialize x_coord, y_coord
-    @x = x_coord
-    @y = y_coord
-    @knight_moves = nil
+  attr_reader :coordinate, :knight_moves
+  def initialize coordinate
+    @coordinate = coordinate
+    @knight_moves = []
+  end
+
+  def add_edge(neighbour)
+    @knight_moves << neighbour
   end
 end
 
@@ -109,4 +116,4 @@ class Knight
   end
 end
 
-Board.new
+KnightsTravails.new
