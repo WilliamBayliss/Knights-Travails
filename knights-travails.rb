@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 class KnightsTravails
   def initialize
     puts "Welcome to Knights Travails! This program will tell you the shortest path for a Knight from one square on a chess board to any other square on the board."
