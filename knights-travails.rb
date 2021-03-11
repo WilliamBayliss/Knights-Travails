@@ -48,13 +48,15 @@ class Board
     current_point = pathway[start_and_finish[1].index]
     knight.move(start_and_finish[1])
 
+    # Moves knight backwards through path until source Square is found
     until current_point[:predecessor].nil?
       knight.move(current_point[:predecessor])
       current_point = pathway[current_point[:predecessor].index]
     end
+    # Reverses knight path to present to user
     knight.path.reverse!
 
-    puts "Your Knight took #{knight.path.length} moves! Here's Your path:"
+    puts "Your Knight took #{knight.path.length - 1} moves! Here's Your path:"
     knight.path.each do |step|
       puts "Knight to #{step.coordinate}"
     end
@@ -212,7 +214,7 @@ class Square
   end
 end
 
-# Object that takes a Square as its current position, and contains a method to update the Square to a new position
+# Object that takes a Square as its current position, and contains a method to add squares to the Knight's path
 class Knight
     attr_accessor :path
   def initialize
