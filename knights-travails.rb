@@ -5,23 +5,16 @@ class KnightsTravails
     puts "You will be prompted for a coordinate in the form [X,Y], please use digits from 0-7 to represent the row/column of the square"
     puts "Example, the first square on the board would be [0,0], and the last square would be [7,7]"
     board = Board.new
+    board.create_graph(board.get_chess_board_array)
+    board.add_edges_to_graph
+    board.knight_moves
   end
 end
 
 # Creates a Graph structure for squares on a chess board
 class Board
-# TODO
   def initialize
     @board = {}
-
-    # Creates Graph and adds edges to squares if a Knight can move from one
-    # to another
-    create_graph(get_chess_board_array)
-    add_edges_to_graph()
-
-    knight_moves()
-
-    
   end
 
   def add_square(square)
